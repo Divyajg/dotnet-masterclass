@@ -12,28 +12,29 @@ app.MapGet("/excercise1", (string a, string b, string operation) =>
     if(!IsaValid || !IsbValid)
     {
         return "Invalid inputs";
+        //Results.BadRequest("Invalid inputs");
     }
 
     if(operation == "add")
     {
         return $"The addition of {a} and {b} is {parseda+parsedb}";
+        //Results.Ok($"The addition of {a} and {b} is {parseda+parsedb}");
     }
     else if (operation == "sub")
     {
         return $"The substraction of {a} and {b} is {parseda-parsedb}";
+        //Results.Ok($"The substraction of {a} and {b} is {parseda-parsedb}");
     }
     else if (operation == "multiply")
     {
         return $"The multiplication of {a} and {b} is {parseda*parsedb}";
+        //Results.Ok($"The multiplication of {a} and {b} is {parseda*parsedb}");
     } 
     else{
         return "Invalid Operator";
+        ////Results.BadRequest("Invalid Operator");
     }
 });
-
-app.MapGet("/excercise2", (string input) =>
-{
-    var inputIsValid = int.TryParse(input, out var parsedInput);
 
 string AddNumbers(int parsedInput)
 {
@@ -45,7 +46,7 @@ string AddNumbers(int parsedInput)
      parsedInput = parsedInput / 10;
     }
     
-    return $"The count of {input} is {count}";
+    return $"The count of {parsedInput} is {count}";
 }
 
 string CountCapitalLetters(string input)
@@ -61,6 +62,10 @@ string CountCapitalLetters(string input)
     }
     return $"The number of capital letters in {input} is {count}";
 }
+//double issue!
+app.MapGet("/excercise2", (string input) =>
+{
+    var inputIsValid = int.TryParse(input, out var parsedInput);
 
     if(inputIsValid)
     {
@@ -78,17 +83,16 @@ app.MapGet("/excercise3", () =>
     string sentence = input.Replace(" ", "").ToLower();
     
     var unique =  new List<char>(); 
-    List<char> no_repeats = new List<char>();
           
     foreach (char letter in sentence)
     {  
         unique.Add(letter);
     }   
 
-    no_repeats = unique.Distinct().ToList();
-    no_repeats.Sort(); 
+    unique = unique.Distinct().ToList();
+    unique.Sort(); 
 
-    return no_repeats;
+    return unique;
 });
 
 //Homework excercise:
