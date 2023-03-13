@@ -30,7 +30,8 @@ app.MapGet("/excercise1", (string a, string b, string operation) =>
         return $"The multiplication of {a} and {b} is {parseda*parsedb}";
         //Results.Ok($"The multiplication of {a} and {b} is {parseda*parsedb}");
     } 
-    else{
+    else
+    {
         return "Invalid Operator";
         ////Results.BadRequest("Invalid Operator");
     }
@@ -62,7 +63,7 @@ string CountCapitalLetters(string input)
     }
     return $"The number of capital letters in {input} is {count}";
 }
-//double issue!
+
 app.MapGet("/excercise2", (string input) =>
 {
     var inputIsValid = int.TryParse(input, out var parsedInput);
