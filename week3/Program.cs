@@ -78,9 +78,9 @@ public class Temperature
     
     private set
     {
-     if (value < 273.15m)
+     if (value < -273.15m)
         {
-          throw new ArgumentException("Temperature must be greater than 273.15 Celsius.");
+          throw new ArgumentException("Temperature must be greater than -273.15 Celsius.");
         }
       _celsius = value;
     }
