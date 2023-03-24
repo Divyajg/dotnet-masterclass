@@ -1,9 +1,18 @@
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IMealService, FileMealService>();
 var app = builder.Build();
 
-app.MapGet("/", () => 
-{   
+app.MapGet("/", ([FromServices] IMealService mealSharingService) =>
+{
+    var result = mealSharingService.ListMeals();
+    return result;
+});
 
+app.MapPost("/", ([FromServices] IMealService mealSharingService, Meal meal) =>
+{
+    mealSharingService.AddMeal(meal);
 });
 
 app.Run();
@@ -15,31 +24,25 @@ public interface IMealService
 }
 public class Meal
 {
-    public string Headline { get; set;}
-    public string Url { get; set;}
-    public string Body { get; set;}
-    public string Location { get; set;}
-    public int Price { get; set;}
+    public string Headline { get; set; }
+    public string Url { get; set; }
+    public string Body { get; set; }
+    public string Location { get; set; }
+    public int Price { get; set; }
 }
 
 public class FileMealService : IMealService
 {
     public void AddMeal(Meal meal)
     {
-        var meals = new List<Meal>();
-        var meal1 = new Meal 
+        if (!File.Exists("meals.json"))
         {
-            Headline = "headline", 
-            Url = "url", 
-            Body = "body", 
-            Location = "location", 
-            Price = 89
-        };
-        meals.Add(meal1);
-        
-        var mealJson = System.Text.Json.JsonSerializer.Serialize(meal1);
+            File.WriteAllText("meals.json", "[]");
+        }
+        var meals = System.Text.Json.JsonSerializer.Deserialize<List<Meal>>(File.ReadAllText(@"meals.json"));
 
-        File.WriteAllText("meals.json", mealJson);
+        meals.Add(meal);
+        File.WriteAllText("meals.json", System.Text.Json.JsonSerializer.Serialize(meals));
     }
 
     public List<Meal> ListMeals()
