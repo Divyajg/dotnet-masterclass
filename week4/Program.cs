@@ -94,22 +94,22 @@ app.MapGet("/products", async ( int id) =>
 });
 
 //A PUT endpoint that updates a user based on an id and the body of the request
-app.MapPut("/users/update", async (int id, User user) =>
+app.MapPut("/users", async (int id, User user) =>
 {
-    var response = await client.PutAsJsonAsync($"https://dummyjson.com/users/put/{id}", user);
+    var response = await client.PutAsJsonAsync($"https://dummyjson.com/users/{id}", user);
     var UpdatedUser = await response.Content.ReadFromJsonAsync<User>();
     var result = new
     {
         StatusCode = response.StatusCode,
         data = UpdatedUser,
     };
-    return response;
+    return Results.Ok(result);
 });
 
 //A PUT endpoint that updates a product based on an id and the body of the request
-app.MapPut("/products/update", async (int id, Product product) =>
+app.MapPut("/products", async (int id, Product product) =>
 {
-    var response = await client.PutAsJsonAsync($"https://dummyjson.com/products/put/{id}", product);
+    var response = await client.PutAsJsonAsync($"https://dummyjson.com/products/{id}", product);
     var UpdatedProduct = await response.Content.ReadFromJsonAsync<Product>();
     var result = new
     {
@@ -120,17 +120,17 @@ app.MapPut("/products/update", async (int id, Product product) =>
 });
 
 //A DELETE endpoint that deletes a user based on an id
-app.MapDelete("/users/delete", async (int id) =>
+app.MapDelete("/users", async (int id) =>
 {
-    var response = await client.DeleteAsync($"https://dummyjson.com/users/delete/{id}");
-    return response;
+    var response = await client.DeleteAsync($"https://dummyjson.com/users/{id}");
+    return response.StatusCode;
 });
 
 //A DELETE endpoint that deletes a product based on an id
-app.MapDelete("/products/delete", async (int id) =>
+app.MapDelete("/products", async (int id) =>
 {
-    var response = await client.DeleteAsync($"https://dummyjson.com/products/delete/{id}");
-    return response;
+    var response = await client.DeleteAsync($"https://dummyjson.com/products/{id}");
+    return response.StatusCode;
 });
 
 async Task<User> GetUserById(int id)
